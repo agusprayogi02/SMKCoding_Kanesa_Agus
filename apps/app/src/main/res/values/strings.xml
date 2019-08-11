@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">apps</string>
-    <string name="coba">Hallo Semua</string>
+    <string name="reg">Registrasi</string>
+    <string name="nm">Nama</string>
+    <string name="ml">Email</string>
+    <string name="mt16">16dp</string>
+    <string name="telp">No.Telp</string>
+    <string name="adds">Alamat</string>
+    <string name="regi">Register</string>
+    <string-array name="kl">
+        <item>Pilihan Kelamin</item>
+        <item>Laki-Laki</item>
+        <item>Perempuan</item>
+    </string-array>
 </resources>
