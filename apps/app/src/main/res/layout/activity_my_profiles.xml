@@ -1,10 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/aa"
         tools:context=".MyProfiles">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:padding="16dp"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:id="@+id/imgpro"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@color/ee"/>
+            <LinearLayout
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/imgpro"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nmt"
+                            android:textSize="15sp"
+                            android:textColor="@color/black"
+                            android:fontFamily="sans-serif"/>
+                    <TextView
+                            android:id="@+id/txtnm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="15sp"
+                            android:textColor="@color/black"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender: "
+                            android:textSize="15sp"
+                            android:textColor="#000000"
+                            android:fontFamily="sans-serif"/>
+                    <TextView
+                            android:id="@+id/txtkl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="15dp"
+                            android:textColor="@color/black"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Email : "
+                            android:textColor="@color/black"
+                            android:fontFamily="sans-serif"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content"/>
+                    <TextView
+                            android:id="@+id/txteml"
+                            android:layout_width="wrap_content"
+                            android:text=""
+                            android:textSize="15dp"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Telp : "
+                            android:textSize="15sp"
+                            android:textColor="#000000"
+                            android:fontFamily="sans-serif"/>
+                    <TextView
+                            android:id="@+id/txttlp"
+                            android:layout_width="wrap_content"
+                            android:text=""
+                            android:textSize="15dp"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address:"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:fontFamily="sans-serif"/>
+        <TextView
+                android:layout_marginTop="16dp"
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:fontFamily="sans-serif"/>
+    </LinearLayout>
+</ScrollView>
