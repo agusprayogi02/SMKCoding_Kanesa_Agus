@@ -1,10 +1,10 @@
-package com.kanesa.canteenkanesa
+package id.canteen
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import com.kanesa.canteenkanesa.ui.login.LoginActivity
+import id.canteen.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUp : AppCompatActivity() {
