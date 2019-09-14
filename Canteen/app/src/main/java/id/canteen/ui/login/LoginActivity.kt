@@ -18,6 +18,8 @@ import android.widget.Toast
 import id.canteen.MainActivity
 
 import id.canteen.R
+import id.canteen.SignUp
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -92,12 +94,21 @@ class LoginActivity : AppCompatActivity() {
                 false
             }
 
+            add.setOnClickListener{
+                sigup()
+            }
+
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
                 Home()
             }
         }
+    }
+
+    private fun sigup() {
+        val i = Intent(this, SignUp::class.java)
+        startActivity(i)
     }
 
     private fun Home() {

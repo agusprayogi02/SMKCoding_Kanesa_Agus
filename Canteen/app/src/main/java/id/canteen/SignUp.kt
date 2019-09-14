@@ -13,13 +13,13 @@ class SignUp : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         setSpinner()
-        cencel.setOnClickListener{
-            Cencel()
+        btnsignup.setOnClickListener{
+            sigup()
         }
     }
 
-    private fun Cencel() {
-        val i = Intent(this, LoginActivity::class.java)
+    private fun sigup() {
+        val i = Intent(this,LoginActivity::class.java)
         startActivity(i)
     }
 
