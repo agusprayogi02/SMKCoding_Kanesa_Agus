@@ -38,10 +38,10 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener {
 
                     if (!it.isSuccessful) {
-                        return@addOnCompleteListener
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                         progressDialog.hide()
+                        return@addOnCompleteListener
 
                     } else
                         Toast.makeText(this, "Succesfully Login", Toast.LENGTH_SHORT).show()
