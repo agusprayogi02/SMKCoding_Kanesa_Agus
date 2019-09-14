@@ -1,5 +1,7 @@
 package id.canteen
 
+import android.content.Intent
+import android.media.ExifInterface
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,6 +21,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import id.canteen.ui.gallery.GalleryFragment
 import id.canteen.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.view.MenuItem
+import android.view.MenuInflater
+import com.google.firebase.auth.FirebaseAuth
+import id.canteen.ui.login.LoginActivity
+import id.canteen.ui.tools.ToolsFragment
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mpager: ViewPager2
@@ -83,9 +91,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                ToolsFragment()
+                true
+            }
+            R.id.logout -> {
+                FirebaseAuth.getInstance().signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1073322331394",
+    "firebase_url": "https://canteen-school.firebaseio.com",
+    "project_id": "canteen-school",
+    "storage_bucket": "canteen-school.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073322331394:android:630fd99114b583fc3e061b",
+        "android_client_info": {
+          "package_name": "id.canteen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073322331394-mcd05o0j0najn89k2u4rp81qc81nc82d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.canteen",
+            "certificate_hash": "d2f49d1434cd47a99e60445f96430571def7e741"
+          }
+        },
+        {
+          "client_id": "1073322331394-knngrrb9h67dguelq3ksbca5psi3ljod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB84_NMitlLiSR2XKGK4MluEef0E_vsyJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073322331394-knngrrb9h67dguelq3ksbca5psi3ljod.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
