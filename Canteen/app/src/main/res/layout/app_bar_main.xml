@@ -29,12 +29,13 @@
         android:layout_weight="1">
 
     </androidx.viewpager2.widget.ViewPager2>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:background="@color/blue"
         android:layout_gravity="bottom"
         app:tabTextColor="@color/colorPrimary"
-        android:layout_height="50dp"/>
+        android:layout_height="35dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
