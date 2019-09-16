@@ -23,7 +23,7 @@
         android:id="@+id/addM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="@dimen/margin"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="40dp"
         android:src="@android:drawable/ic_input_add"
         android:layout_width="wrap_content"

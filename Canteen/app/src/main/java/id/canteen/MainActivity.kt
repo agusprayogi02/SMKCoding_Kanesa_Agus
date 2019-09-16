@@ -1,7 +1,6 @@
 package id.canteen
 
 import android.content.Intent
-import android.media.ExifInterface
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +22,10 @@ import id.canteen.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.view.MenuItem
 import android.view.MenuInflater
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import id.canteen.ui.login.LoginActivity
 import id.canteen.ui.tools.ToolsFragment
@@ -33,12 +36,20 @@ class MainActivity : AppCompatActivity() {
     val NM_PAGER = 2
     val name_tab = arrayOf("Home", "Galery")
 
-
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//      Iklan Admob
+        MobileAds.initialize(this, "ca-app-pub-3073208106044913~8344198184")
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = "ca-app-pub-3073208106044913/9497497751"
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+//       View pager2
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         view_pager.adapter = pagerAdapter
 
@@ -46,10 +57,10 @@ class MainActivity : AppCompatActivity() {
             TabLayoutMediator.OnConfigureTabCallback { tab, position ->
 
             })
-        tabLayoutMediator.attach();
+        tabLayoutMediator.attach()
 
         for (i in 0..1) {
-            tab.getTabAt(i)!!.setText(name_tab.get(i));
+            tab.getTabAt(i)!!.setText(name_tab.get(i))
         }
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

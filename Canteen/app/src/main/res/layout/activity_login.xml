@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin"
                 android:hint="@string/password"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin" />
         </com.google.android.material.textfield.TextInputLayout>
