@@ -32,9 +32,6 @@ import id.canteen.ui.tools.ToolsFragment
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mpager: ViewPager2
-    val NM_PAGER = 2
-    val name_tab = arrayOf("Home", "Galery")
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mInterstitialAd: InterstitialAd
@@ -49,19 +46,6 @@ class MainActivity : AppCompatActivity() {
         mInterstitialAd.adUnitId = "ca-app-pub-3073208106044913/9497497751"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
-//       View pager2
-        val pagerAdapter = ScreenSlidePagerAdapter(this)
-        view_pager.adapter = pagerAdapter
-
-        val tabLayoutMediator = TabLayoutMediator(tab, view_pager, true,
-            TabLayoutMediator.OnConfigureTabCallback { tab, position ->
-
-            })
-        tabLayoutMediator.attach()
-
-        for (i in 0..1) {
-            tab.getTabAt(i)!!.setText(name_tab.get(i))
-        }
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -79,26 +63,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-    }
-
-    override fun onBackPressed() {
-        if (view_pager.currentItem == 0) {
-            super.onBackPressed()
-        }else {
-            view_pager.currentItem = mpager.currentItem - 1
-        }
-    }
-
-    private inner class ScreenSlidePagerAdapter(fa : FragmentActivity) : FragmentStateAdapter(fa){
-        override fun createFragment(position: Int): Fragment {
-            if (position == 0){
-                return HomeFragment()
-            }else{
-                return GalleryFragment()
-            }
-        }
-
-        override fun getItemCount(): Int  = NM_PAGER
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
