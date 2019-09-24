@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1073322331394-nhmbfs9sg9futkl5fq8vekgdkpgrbjpc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.canteen",
+            "certificate_hash": "0ce4ae784929db5a714a917ffe7ccd0998c282bd"
+          }
+        },
+        {
           "client_id": "1073322331394-mcd05o0j0najn89k2u4rp81qc81nc82d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

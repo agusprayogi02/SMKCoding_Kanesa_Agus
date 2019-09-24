@@ -1,4 +1,4 @@
-package id.canteen.ui.slideshow
+package id.canteen.ui.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import id.canteen.R
 
-class SlideshowFragment : Fragment() {
+class InfoFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var infoViewModel: InfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-            ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
-        val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(this, Observer {
+        infoViewModel =
+            ViewModelProviders.of(this).get(InfoViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_info, container, false)
+        val textView: TextView = root.findViewById(R.id.text_send)
+        infoViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

@@ -4,8 +4,12 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import id.canteen.MainActivity
 import id.canteen.R
@@ -17,6 +21,22 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+//        Iklan
+        MobileAds.initialize(this,getString(R.string.admob_app_id))
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+
+        adView.visibility = View.GONE
+
+        adView.adListener = object : AdListener(){
+            override fun onAdLoaded() {
+                adView.visibility = View.VISIBLE
+                super.onAdLoaded()
+            }
+        }
+//        akhir Iklan
+
         add.setOnClickListener {
             Masuk()
         }
