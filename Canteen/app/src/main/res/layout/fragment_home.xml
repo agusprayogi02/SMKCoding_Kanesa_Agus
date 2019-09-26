@@ -34,7 +34,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:onClick="goTo"
+                android:onClick="goToAttract"
                 android:id="@+id/daftar"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"

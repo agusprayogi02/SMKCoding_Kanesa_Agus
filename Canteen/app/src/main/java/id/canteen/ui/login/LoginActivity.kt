@@ -1,6 +1,7 @@
 package id.canteen.ui.login
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -82,5 +83,4 @@ class LoginActivity : AppCompatActivity() {
         val i = Intent(this, SignUp::class.java)
         startActivity(i)
     }
-
 }

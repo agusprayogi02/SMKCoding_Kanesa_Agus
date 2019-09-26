@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuInflater
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import id.canteen.ui.login.LoginActivity
 import id.canteen.ui.tools.ToolsFragment
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        checkoutuser()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -47,6 +50,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun checkoutuser() {
+        if(FirebaseAuth.getInstance().uid.isNullOrEmpty()){
+            val intent = Intent(this,LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.main, menu)
@@ -59,9 +70,24 @@ class MainActivity : AppCompatActivity() {
                 ToolsFragment()
                 true
             }
+            R.id.action_share -> {
+                try {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "text/plain"
+                    var uri: String = "ayo install Canteen School Now"
+                    intent.putExtra(Intent.EXTRA_TEXT,uri)
+                    intent.`package` = "com.whatsapp"
+                    startActivity(intent)
+                }catch (exp: Exception){
+                    Toast.makeText(applicationContext,"Whatsapp Tidak Terintall!!",Toast.LENGTH_LONG).show()
+                }
+                true
+            }
             R.id.logout -> {
                 FirebaseAuth.getInstance().signOut()
-                startActivity(Intent(this, LoginActivity::class.java))
+                val i = Intent(this, LoginActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(i)
                 true
             }
             else -> super.onOptionsItemSelected(item)
