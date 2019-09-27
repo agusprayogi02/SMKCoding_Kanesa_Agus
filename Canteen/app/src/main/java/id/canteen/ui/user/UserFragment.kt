@@ -6,24 +6,33 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import id.canteen.R
 import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.File
+import java.io.IOException
+import java.util.*
 
 class UserFragment : Fragment() {
 
     private lateinit var userViewModel: UserViewModel
-    private val PICK_IMAGE_REQUEST = 71
-    private var filePath: String? = null
+    private val PICK_IMAGE_REQUEST = 100
+    private var filePath: Uri? = null
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
 
@@ -42,33 +51,60 @@ class UserFragment : Fragment() {
         userViewModel.text.observe(this, Observer {
             textView.text = it
             account_image.setOnClickListener {
-                launchGallery()
+//                launchGallery()
+                acc_name.setText("Ini Adalah foto saya")
             }
         })
         return root
     }
 
     private fun launchGallery() {
-        val intent = Intent()
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK){
-            if (data == null && data!!.data == null){
-                return
+            super.onActivityResult(requestCode, resultCode, data)
+            if(requestCode == PICK_IMAGE_REQUEST){
+                if (resultCode == Activity.RESULT_OK && data!!.data != null){
+                    filePath = data.data
+                    try {
+                        val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
+                        account_image.setImageBitmap(bitmap)
+
+
+//                        val metadata = StorageMetadata.Builder()
+//                            .setContentType("image/jpeg")
+//                            .build()
+//// Upload file and metadata to the path 'images/mountains.jpg'
+//                        val uploadTask = storageReference!!.child("images/${filePath!!.lastPathSegment}").putFile(
+//                            filePath!!, metadata)
+//
+//// Listen for state changes, errors, and completion of the upload.
+//                        uploadTask.addOnProgressListener { taskSnapshot ->
+//                            val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+//                            System.out.println("Upload is $progress% done")
+//                        }.addOnPausedListener {
+//                            System.out.println("Upload is paused")
+//                        }.addOnFailureListener {
+//                            // Handle unsuccessful uploads
+//                        }.addOnSuccessListener {
+//                            // Handle successful uploads on complete
+//                            // ...
+//                        }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
             }
-            filePath = data.dataString
-            acc_name.setText(filePath)
-            val file = Uri.fromFile(File(filePath))
-            val riversRef: StorageReference? = storageReference!!.child(filePath.toString())
-            riversRef!!.putFile(file)
-            val bitmap: Bitmap? = null
-            account_image.setImageBitmap(BitmapFactory.decodeFile(filePath.toString()))
-        }
+
+    }
+
+    private fun uploadImage() {
+
+// Create the file metadata
+
     }
 }

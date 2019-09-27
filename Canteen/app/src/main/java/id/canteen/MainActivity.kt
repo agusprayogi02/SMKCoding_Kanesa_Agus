@@ -74,10 +74,10 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"
-                    var uri: String = "ayo install Canteen School Now"
+                    val uri: String = "ayo install Canteen School Now"
+                    intent.putExtra(Intent.EXTRA_SUBJECT,"Share Here")
                     intent.putExtra(Intent.EXTRA_TEXT,uri)
-                    intent.`package` = "com.whatsapp"
-                    startActivity(intent)
+                    startActivity(Intent.createChooser(intent,"Sharing Option"))
                 }catch (exp: Exception){
                     Toast.makeText(applicationContext,"Whatsapp Tidak Terintall!!",Toast.LENGTH_LONG).show()
                 }
