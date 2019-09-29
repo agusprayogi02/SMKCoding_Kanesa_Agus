@@ -52,7 +52,6 @@ class UserFragment : Fragment() {
             textView.text = it
             account_image.setOnClickListener {
                 launchGallery()
-//                acc_name.setText("Ini Adalah foto saya")
             }
         })
         return root

@@ -17,10 +17,6 @@ class SignUp : AppCompatActivity() {
 
     lateinit var ref: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
-//    private val nama = inname.text.toString()
-//    private val user = inuser.text.toString()
-//    private val pass = inpass.text.toString()
-//    private val level = "user"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +31,6 @@ class SignUp : AppCompatActivity() {
 
     private fun sigup() {
         val error = "Harus di ISi"
-        val nama = inname.text.toString()
         val user = inuser.text.toString()
         val pass = inpass.text.toString()
         if (inname.text!!.isEmpty()) {
@@ -46,15 +41,15 @@ class SignUp : AppCompatActivity() {
             inpass.error = error
         } else if (konpass.text.toString() != inpass.text.toString()) {
             konpass.error = "Konfigurasi Password Salah"
-        } else if (konpass.text!!.isEmpty()) {
-            konpass.error = error
+        } else if (jk.selectedItem.equals("Pilih Jenis Kelamin")) {
+
         } else {
             mAuth.createUserWithEmailAndPassword(user, pass)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val user = mAuth.getCurrentUser()
+                        val user = mAuth.currentUser
                         Toast.makeText(this, "$user", Toast.LENGTH_LONG).show()
-//                        savedata()
+                        savedata()
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(this, it.result.toString(), Toast.LENGTH_LONG).show()
@@ -63,31 +58,27 @@ class SignUp : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this, it.message.toString(), Toast.LENGTH_LONG).show()
                 }
-            val level = "user"
-            val users = Users(nama, user, pass, level)
-            val userId = ref.push().key.toString()
-            ref.child(userId).setValue(users).addOnCompleteListener {
-                Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
-//                val i = Intent(this, LoginActivity::class.java)
-//                startActivity(i)
-            }
+//            savedata()
+//            Toast.makeText(this, "gagal", Toast.LENGTH_LONG).show()
+//            startActivity(Intent(this,SignUp::class.java))
         }
     }
 
     private fun savedata() {
 
-        val level = "user"
+        val level = "admin"
         val nama = inname.text.toString()
         val user = inuser.text.toString()
         val pass = inpass.text.toString()
+        val jenkel = jk.selectedItem.toString()
         val uid = FirebaseAuth.getInstance().uid
-        val db = FirebaseDatabase.getInstance().getReference("User/$uid")
-        db.setValue(Users(nama, user, pass, level))
+        val db = FirebaseDatabase.getInstance().getReference("Users/$uid")
+        db.setValue(Users(nama, user, pass, jenkel ,level))
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
-//                    val i = Intent(this, LoginActivity::class.java)
-//                    startActivity(i)
+                    val i = Intent(this, LoginActivity::class.java)
+                    startActivity(i)
                 } else {
                     Toast.makeText(this, "Gagal", Toast.LENGTH_SHORT).show()
                 }

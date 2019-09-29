@@ -24,9 +24,9 @@ class Tambah : AppCompatActivity() {
     private var filePath: Uri? = null
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
-    lateinit var ref : DatabaseReference
+    lateinit var ref: DatabaseReference
     private var mAuth: FirebaseAuth? = null
-    lateinit var link : String
+    lateinit var link: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +34,14 @@ class Tambah : AppCompatActivity() {
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-        ref = FirebaseDatabase.getInstance().getReference("USERS")
+        val iin = intent
+        val b = iin.getExtras()!!.get("warung").toString()
+        ref = FirebaseDatabase.getInstance().getReference("$b/Menus")
         add_menu_image.setOnClickListener {
             launchGallery()
         }
 
-        add_menu_btn.setOnClickListener{
+        add_menu_btn.setOnClickListener {
             insertdata()
         }
     }
@@ -52,8 +54,8 @@ class Tambah : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == PICK_IMAGE_REQUEST){
-            if (resultCode == Activity.RESULT_OK && data!!.data != null){
+        if (requestCode == PICK_IMAGE_REQUEST) {
+            if (resultCode == Activity.RESULT_OK && data!!.data != null) {
                 filePath = data.data
                 try {
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, filePath)
@@ -65,18 +67,21 @@ class Tambah : AppCompatActivity() {
         }
     }
 
-    private fun insertdata(){
-        if (filePath != null){
+    private fun insertdata() {
+        if (filePath != null) {
             val metadata = StorageMetadata.Builder()
-                .setContentType("image/jpeg")
+                .setContentType("image/*")
                 .build()
 // Upload file and metadata to the path 'images/mountains.jpg'
-            val uploadTask = storageReference!!.child("images/Menu/${filePath!!.lastPathSegment}").putFile(
-                filePath!!, metadata
-            )
+            val uploadTask =
+                storageReference!!.child("images/Menu/${filePath!!.lastPathSegment}")
+                    .putFile(
+                        filePath!!, metadata
+                    )
 // Listen for state changes, errors, and completion of the upload.
             uploadTask.addOnProgressListener { taskSnapshot ->
-                val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                val progress =
+                    (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
                 System.out.println("Upload is $progress% done")
             }.addOnPausedListener {
                 System.out.println("Upload is paused")
@@ -86,27 +91,35 @@ class Tambah : AppCompatActivity() {
                 val result = it.metadata!!.reference!!.downloadUrl
                 result.addOnSuccessListener {
                     val imageLink = it.toString()
+                    Toast.makeText(this, "$imageLink", Toast.LENGTH_SHORT).show()
                     link = imageLink
+                    savadata()
                 }
             }
+        }else{
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this,Tambah::class.java))
         }
+    }
+
+    private fun savadata() {
         val error = "Harus di ISi"
         val nama = add_menu_nama.text.toString()
         val harga = add_menu_harga.text.toString()
-        if (add_menu_nama.text!!.isEmpty()){
+        if (add_menu_nama.text!!.isEmpty()) {
             add_menu_nama.error = error
-        }else if(add_menu_harga.text!!.isEmpty()){
+        } else if (add_menu_harga.text!!.isEmpty()) {
             add_menu_harga.error = error
-        }else {
+        } else {
             val userId = ref.push().key.toString()
             val iin = intent
             val b = iin.getExtras()!!.get("warung")
             val idWar = b.toString()
 
-            val Menu = Menus(userId,idWar,link ,nama,harga)
+            val Menu = Menus(userId, idWar, link, nama, harga)
             ref.child(userId).setValue(Menu).addOnCompleteListener {
-                Toast.makeText(this, "Successs",Toast.LENGTH_SHORT).show()
-                val i = Intent(this,MenuActivity::class.java)
+                Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
+                val i = Intent(this, MenuActivity::class.java)
                 startActivity(i)
             }
         }

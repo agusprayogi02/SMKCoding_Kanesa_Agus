@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.ListView
 import com.google.firebase.database.*
 import id.canteen.data.Menus
+import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.masukkan.*
 
 class MenuActivity : AppCompatActivity() {
@@ -20,14 +21,14 @@ class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.masukkan)
-        ref = FirebaseDatabase.getInstance().getReference("MENU")
-        list = mutableListOf()
-        listView = findViewById(R.id.list_view)
 
         val iin = intent
         val b = iin.extras!!.get("Nama_menu")
         mn_menu = b.toString()
-        text.setText("Menu Warung "+b)
+        text.setText("Menu Warung "+mn_menu)
+        ref = FirebaseDatabase.getInstance().getReference("$mn_menu/Menus")
+        list = mutableListOf()
+        listView = findViewById(R.id.list_view)
 
 
         ref.addValueEventListener(object : ValueEventListener {
