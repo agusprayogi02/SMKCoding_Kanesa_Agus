@@ -39,7 +39,9 @@ class Home : Fragment() {
         homeViewModel.text.observe(this, Observer {
             textView.text = it
             daftar.setOnClickListener {
-                startActivity(Intent(activity, MenuActivity::class.java))
+                val intent = Intent(activity, MenuActivity::class.java)
+                intent.putExtra("Nama_menu",menu_mn.text.toString())
+                startActivity(intent)
             }
         })
         return root

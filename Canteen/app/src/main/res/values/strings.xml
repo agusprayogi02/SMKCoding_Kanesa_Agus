@@ -9,7 +9,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
@@ -22,11 +21,12 @@
     <string name="login_failed">"Login failed"</string>
     <string name="action_sign_up">Sign up</string>
     <string name="nama">Nama ...</string>
-    <string name="username">Username ...</string>
+    <string name="username">Email ...</string>
     <string name="password">Password ...</string>
     <string name="KonfigurasiPass">Konfigurasi Password ...</string>
     <string name="action_exit">Exit</string>
     <string name="admob_app_id">ca-app-pub-3916205593386444~4852919008</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3916205593386444/4192791065</string>
     <string name="menu_info">Info</string>
     <string name="menu_user">Account</string>
     <string-array name="jk">
@@ -37,7 +37,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="makanan">Menu Makanan</string>
+    <string name="makanan">Menu Warung</string>
     <string name="harga">Harga : Rp.</string>
+    <string name="menu_histori">Histori</string>
+    <string name="menu_tambah">Tambah</string>
+    <string name="versi">Apk Version : 1.0</string>
+    <string name="tambah_data">Tambah Menu</string>
+    <string name="add_image">Masukkan Gambar</string>
+    <string name="tambah">Tambahkan</string>
 
 </resources>

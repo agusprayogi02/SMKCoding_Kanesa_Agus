@@ -17,7 +17,7 @@ import android.view.MenuInflater
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import id.canteen.ui.login.LoginActivity
-import id.canteen.ui.tools.ToolsFragment
+import id.canteen.ui.histori.HistoriFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_user,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_info
+                R.id.nav_histori, R.id.nav_share, R.id.nav_info
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                ToolsFragment()
+                HistoriFragment()
                 true
             }
             R.id.action_share -> {

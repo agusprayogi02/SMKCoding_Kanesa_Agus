@@ -25,12 +25,19 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/account_image"
+            <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_account_circle_black_24dp" />
+                app:cardBackgroundColor="@android:color/darker_gray"
+                app:cardCornerRadius="100dp">
+                <ImageView
+                    android:id="@+id/account_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_account_circle_black_24dp" />
+            </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/acc_name"
                 android:layout_marginTop="@dimen/margin"

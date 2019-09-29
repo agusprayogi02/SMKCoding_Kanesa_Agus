@@ -54,6 +54,7 @@
                     android:id="@+id/inuser"
                     android:hint="@string/username"
                     android:maxLines="1"
+                    android:inputType="textEmailAddress"
                     android:paddingHorizontal="@dimen/margin"
                     android:layout_marginHorizontal="@dimen/margin"
                     android:layout_width="match_parent"

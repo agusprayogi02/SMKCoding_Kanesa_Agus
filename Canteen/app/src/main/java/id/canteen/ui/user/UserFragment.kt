@@ -51,8 +51,8 @@ class UserFragment : Fragment() {
         userViewModel.text.observe(this, Observer {
             textView.text = it
             account_image.setOnClickListener {
-//                launchGallery()
-                acc_name.setText("Ini Adalah foto saya")
+                launchGallery()
+//                acc_name.setText("Ini Adalah foto saya")
             }
         })
         return root
@@ -102,9 +102,4 @@ class UserFragment : Fragment() {
 
     }
 
-    private fun uploadImage() {
-
-// Create the file metadata
-
-    }
 }

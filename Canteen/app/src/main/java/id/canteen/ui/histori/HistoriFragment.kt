@@ -1,4 +1,4 @@
-package id.canteen.ui.tools
+package id.canteen.ui.histori
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import id.canteen.R
 
-class ToolsFragment : Fragment() {
+class HistoriFragment : Fragment() {
 
-    private lateinit var toolsViewModel: ToolsViewModel
+    private lateinit var historiViewModel: HistoriViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        toolsViewModel =
-            ViewModelProviders.of(this).get(ToolsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_tools, container, false)
+        historiViewModel =
+            ViewModelProviders.of(this).get(HistoriViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_histori, container, false)
         val textView: TextView = root.findViewById(R.id.text_tools)
-        toolsViewModel.text.observe(this, Observer {
+        historiViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
