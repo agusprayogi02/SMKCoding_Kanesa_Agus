@@ -14,6 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import id.canteen.data.Menus
+import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_tambah.*
 import kotlinx.android.synthetic.main.masukkan.*
 import java.io.IOException
@@ -72,6 +73,8 @@ class Tambah : AppCompatActivity() {
             val metadata = StorageMetadata.Builder()
                 .setContentType("image/*")
                 .build()
+
+//            val com = Compressor(this).setDestinationDirectoryPath(filePath)
 // Upload file and metadata to the path 'images/mountains.jpg'
             val uploadTask =
                 storageReference!!.child("images/Menu/${filePath!!.lastPathSegment}")
