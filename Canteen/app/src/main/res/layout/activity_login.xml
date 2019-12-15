@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
-            android:background="@color/blue"
+            android:background="@drawable/header"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/title_activity_login"
@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin"
                 android:hint="@string/username"
+                android:inputType="text"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,8 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:text="@string/action_sign_in"
+            android:textStyle="bold"
+            android:textSize="20dp"
             android:background="@drawable/button"
-            android:textColor="@color/white"
+            android:textColor="@color/blue"
             />
     </LinearLayout>
 
@@ -84,16 +87,18 @@
         android:layout_alignParentRight="true"
         android:src="@android:drawable/ic_input_add"
         android:layout_margin="@dimen/margin"
-        />
+        tools:ignore="RelativeOverlap" />
 
     <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id">
+        ads:adUnitId="@string/banner_ad_unit_id"
+        tools:ignore="RedundantNamespace">
     </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>

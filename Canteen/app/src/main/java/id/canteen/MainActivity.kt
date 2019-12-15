@@ -14,15 +14,21 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuInflater
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import id.canteen.data.Users
 import id.canteen.ui.login.LoginActivity
 import id.canteen.ui.histori.HistoriFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
+    var mAuth : FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +37,35 @@ class MainActivity : AppCompatActivity() {
         checkoutuser()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        if (!FirebaseAuth.getInstance().uid.isNullOrEmpty()){
+            val headerview = nav_view.getHeaderView(0)
+            val UserPeng : TextView = headerview.findViewById(R.id.UserPeng)
+            val username : TextView = headerview.findViewById(R.id.penguna)
+            UserPeng.text = mAuth.currentUser!!.email
+            setSupportActionBar(toolbar)
+
+            ref.addValueEventListener(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()){
+                        for (h in p0.children){
+                            val user = h.getValue(Users::class.java)
+                            if(user!!.current_user == mAuth.currentUser!!.uid){
+                                username.text = user.nama
+                                if (user.level.equals("member",true)){
+                                    val i = Intent(this@MainActivity, MenuActivity::class.java)
+                                    i.putExtra("warung", user.warung)
+                                    startActivity(i)
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+        }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -57,7 +91,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.main, menu)

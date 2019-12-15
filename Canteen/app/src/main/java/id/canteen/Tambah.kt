@@ -2,22 +2,25 @@ package id.canteen
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import id.canteen.data.Menus
-import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_tambah.*
-import kotlinx.android.synthetic.main.masukkan.*
+import java.io.ByteArrayOutputStream
 import java.io.IOException
+import kotlin.random.Random
+
 
 class Tambah : AppCompatActivity() {
 
@@ -26,18 +29,18 @@ class Tambah : AppCompatActivity() {
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
     lateinit var ref: DatabaseReference
-    private var mAuth: FirebaseAuth? = null
+    private var mAuth: FirebaseAuth? = FirebaseAuth.getInstance()
     lateinit var link: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tambah)
-
+        prosessBar.hide()
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         val iin = intent
         val b = iin.getExtras()!!.get("warung").toString()
-        ref = FirebaseDatabase.getInstance().getReference("$b/Menus")
+        ref = FirebaseDatabase.getInstance().getReference("Menus")
         add_menu_image.setOnClickListener {
             launchGallery()
         }
@@ -70,22 +73,36 @@ class Tambah : AppCompatActivity() {
 
     private fun insertdata() {
         if (filePath != null) {
-            val metadata = StorageMetadata.Builder()
-                .setContentType("image/*")
-                .build()
-
-//            val com = Compressor(this).setDestinationDirectoryPath(filePath)
-// Upload file and metadata to the path 'images/mountains.jpg'
-            val uploadTask =
-                storageReference!!.child("images/Menu/${filePath!!.lastPathSegment}")
-                    .putFile(
-                        filePath!!, metadata
-                    )
+//            val metadata = StorageMetadata.Builder()
+//                .setContentType("image/*")
+//                .build()
+//
+////            val com = Compressor(this).setDestinationDirectoryPath(filePath)
+//// Upload file and metadata to the path 'images/mountains.jpg'
+//            val uploadTask =
+//                storageReference!!.child("images/Menu/${filePath!!.lastPathSegment}")
+//                    .putFile(
+//                        filePath!!, metadata
+//                    )
 // Listen for state changes, errors, and completion of the upload.
+            val rand = Random(1000).toString()
+            val mountainImagesRef = storageReference!!.child("images/Menu/$rand")
+            addImage.isDrawingCacheEnabled = true
+            addImage.buildDrawingCache()
+            val bitmap = (addImage.drawable as BitmapDrawable).bitmap
+            val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 0.3).toInt(),
+                (bitmap.height * 0.3).toInt(), true)
+            val baos = ByteArrayOutputStream()
+            resized.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+            val data = baos.toByteArray()
+
+            val uploadTask = mountainImagesRef.putBytes(data)
             uploadTask.addOnProgressListener { taskSnapshot ->
-                val progress =
-                    (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
-                System.out.println("Upload is $progress% done")
+                val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                println("Upload is $progress% done")
+                prosessBar.isIndeterminate = true
+                prosessBar.show()
+                prosessBar.setProgress(progress.toInt())
             }.addOnPausedListener {
                 System.out.println("Upload is paused")
             }.addOnFailureListener {
@@ -93,10 +110,12 @@ class Tambah : AppCompatActivity() {
             }.addOnSuccessListener {
                 val result = it.metadata!!.reference!!.downloadUrl
                 result.addOnSuccessListener {
-                    val imageLink = it.toString()
-                    Toast.makeText(this, "$imageLink", Toast.LENGTH_SHORT).show()
+                    prosessBar.hide()
+                    val url = it.toString()
+                    val imageLink = rand
+                    Toast.makeText(this, imageLink, Toast.LENGTH_SHORT).show()
                     link = imageLink
-                    savadata()
+                    savadata(url)
                 }
             }
         }else{
@@ -105,7 +124,7 @@ class Tambah : AppCompatActivity() {
         }
     }
 
-    private fun savadata() {
+    private fun savadata(url : String) {
         val error = "Harus di ISi"
         val nama = add_menu_nama.text.toString()
         val harga = add_menu_harga.text.toString()
@@ -118,8 +137,8 @@ class Tambah : AppCompatActivity() {
             val iin = intent
             val b = iin.getExtras()!!.get("warung")
             val idWar = b.toString()
-
-            val Menu = Menus(userId, idWar, link, nama, harga)
+            val User = mAuth!!.currentUser!!.uid
+            val Menu = Menus(userId, User,idWar, url,link, nama, harga)
             ref.child(userId).setValue(Menu).addOnCompleteListener {
                 Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
                 val i = Intent(this, MenuActivity::class.java)
