@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Canteen</string>
+    <string name="app_name">Canteen School</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Canteen School</string>
@@ -22,7 +22,7 @@
     <string name="action_sign_up">Sign up</string>
     <string name="nama">Nama ...</string>
     <string name="username">Email ...</string>
-    <string name="password">Password ...</string>
+    <string name="password">Password (min-6) ..</string>
     <string name="KonfigurasiPass">Konfigurasi Password ...</string>
     <string name="action_exit">Exit</string>
     <string name="admob_app_id">ca-app-pub-3916205593386444~4852919008</string>
@@ -43,7 +43,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="makanan">Menu Warung</string>
+    <string name="makanan">Warung</string>
     <string name="harga">Harga : Rp.</string>
     <string name="menu_histori">Histori</string>
     <string name="menu_tambah">Tambah</string>
@@ -51,5 +51,7 @@
     <string name="tambah_data">Tambah Menu</string>
     <string name="add_image">Masukkan Gambar</string>
     <string name="tambah">Tambahkan</string>
+    <string name="warning">Jika Belum Punya akun Clik Tombol + dibawah Untuk Mendaftar!!</string>
+    <string name="shop">Keranjang</string>
 
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".setting">
+    tools:context=".Setting">
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
-            android:background="@color/blue"
+            android:background="@drawable/header"
             android:gravity="center"
             android:padding="10dp"
             android:text="Pengaturan Warung"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin"
-                android:hint="Nama Lengkap.."
+                android:hint="Nama Penjual.."
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin" />
@@ -87,30 +87,36 @@
                 android:paddingHorizontal="@dimen/margin" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:gravity="center"
-            android:id="@+id/add_menu_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/atas"
-            android:layout_margin="@dimen/margin"
-            android:textStyle="bold"
-            android:text="Simpan"
-            android:textSize="20dp"
-            android:background="@drawable/button"
-            android:textColor="@color/blue"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:gravity="center"
-            android:id="@+id/btnbatal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/atas"
-            android:layout_margin="@dimen/margin"
-            android:text="Batal"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:background="@drawable/button"
-            android:textColor="@color/blue" />
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <androidx.appcompat.widget.AppCompatButton
+
+               android:gravity="center"
+               android:id="@+id/addbtn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/atas"
+               android:layout_margin="@dimen/margin"
+               android:textStyle="bold"
+               android:text="Simpan"
+               android:textSize="20dp"
+               android:background="@drawable/button"
+               android:textColor="@color/blue"/>
+           <androidx.appcompat.widget.AppCompatButton
+               android:layout_alignParentRight="true"
+               android:gravity="center"
+               android:id="@+id/btnbatal"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/atas"
+               android:layout_margin="@dimen/margin"
+               android:text="Batal"
+               android:textStyle="bold"
+               android:textSize="20dp"
+               android:background="@drawable/button"
+               android:textColor="@color/blue" />
+       </RelativeLayout>
 
     </LinearLayout>
 

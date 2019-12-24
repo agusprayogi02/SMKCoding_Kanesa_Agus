@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,21 +32,28 @@ class Tambah : AppCompatActivity() {
     lateinit var ref: DatabaseReference
     private var mAuth: FirebaseAuth? = FirebaseAuth.getInstance()
     lateinit var link: String
+    lateinit var nama: String
+    lateinit var harga: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tambah)
         prosessBar.hide()
+
+        val anim = AnimationUtils.loadAnimation(this ,R.anim.shake)
+
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         val iin = intent
         val b = iin.getExtras()!!.get("warung").toString()
         ref = FirebaseDatabase.getInstance().getReference("Menus")
         add_menu_image.setOnClickListener {
+            it.startAnimation(anim)
             launchGallery()
         }
 
         add_menu_btn.setOnClickListener {
+            it.startAnimation(anim)
             insertdata()
         }
     }
@@ -72,7 +80,14 @@ class Tambah : AppCompatActivity() {
     }
 
     private fun insertdata() {
-        if (filePath != null) {
+        val error = "Harus di ISi"
+        nama = add_menu_nama.text.toString()
+        harga = add_menu_harga.text.toString()
+        if (add_menu_nama.text!!.isEmpty()) {
+            add_menu_nama.error = error
+        } else if (add_menu_harga.text!!.isEmpty()) {
+            add_menu_harga.error = error
+        } else if (filePath != null) {
 //            val metadata = StorageMetadata.Builder()
 //                .setContentType("image/*")
 //                .build()
@@ -101,6 +116,7 @@ class Tambah : AppCompatActivity() {
                 val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
                 println("Upload is $progress% done")
                 prosessBar.isIndeterminate = true
+                prosessBar.setBackgroundResource(R.color.white)
                 prosessBar.show()
                 prosessBar.setProgress(progress.toInt())
             }.addOnPausedListener {
@@ -119,31 +135,21 @@ class Tambah : AppCompatActivity() {
                 }
             }
         }else{
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this,Tambah::class.java))
+            Toast.makeText(this, "Masukkan Gambar", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun savadata(url : String) {
-        val error = "Harus di ISi"
-        val nama = add_menu_nama.text.toString()
-        val harga = add_menu_harga.text.toString()
-        if (add_menu_nama.text!!.isEmpty()) {
-            add_menu_nama.error = error
-        } else if (add_menu_harga.text!!.isEmpty()) {
-            add_menu_harga.error = error
-        } else {
-            val userId = ref.push().key.toString()
-            val iin = intent
-            val b = iin.getExtras()!!.get("warung")
-            val idWar = b.toString()
-            val User = mAuth!!.currentUser!!.uid
-            val Menu = Menus(userId, User,idWar, url,link, nama, harga)
-            ref.child(userId).setValue(Menu).addOnCompleteListener {
-                Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
-                val i = Intent(this, MenuActivity::class.java)
-                startActivity(i)
-            }
+        val userId = ref.push().key.toString()
+        val iin = intent
+        val b = iin.getExtras()!!.get("warung")
+        val idWar = b.toString()
+        val User = mAuth!!.currentUser!!.uid
+        val Menu = Menus(userId, User,idWar, url,link, nama, harga)
+        ref.child(userId).setValue(Menu).addOnCompleteListener {
+            Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
+            val i = Intent(this, MenuActivity::class.java)
+            startActivity(i)
         }
         mAuth = FirebaseAuth.getInstance()
     }

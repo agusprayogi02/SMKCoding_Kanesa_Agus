@@ -8,14 +8,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ListView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import id.canteen.data.Menus
 import id.canteen.data.Users
+import id.canteen.data.Warung
 import id.canteen.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.masukkan.*
 
 class MenuActivity : AppCompatActivity() {
@@ -39,14 +37,32 @@ class MenuActivity : AppCompatActivity() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     for (i in p0.children) {
+
                         val user = i.getValue(Users::class.java)
                         if (user!!.current_user == mAuth.currentUser!!.uid) {
-                            mn_menu = user.warung
-                            text.setText("Menu Warung "+mn_menu)
                             ref = FirebaseDatabase.getInstance().getReference("Menus")
                             list = mutableListOf()
                             listView = findViewById(R.id.list_view)
+                            firebaseDatabase.getReference("Warung").addValueEventListener(
+                                object : ValueEventListener{
+                                    override fun onCancelled(p0: DatabaseError) {
+                                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                    }
 
+                                    override fun onDataChange(p0: DataSnapshot) {
+                                        if (p0.exists()){
+                                            list.clear()
+                                            for (h in p0.children){
+                                                val warung = h.getValue(Warung::class.java)
+                                                if (warung!!.idUser == mAuth.currentUser!!.uid){
+                                                    mn_menu = warung.Nama
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            )
 
                             ref.addValueEventListener(object : ValueEventListener {
                                 override fun onCancelled(p0: DatabaseError) {
@@ -65,10 +81,18 @@ class MenuActivity : AppCompatActivity() {
                                     }
                                 }
                             })
+                            if (mn_menu.isEmpty()){
+                                mn_menu = user.nama
+                            }
+                            text.setText("Menu Warung "+mn_menu)
                         }
                     }
                 }
             })
+        text.setOnClickListener {
+            val i = Intent(this,Setting::class.java)
+            startActivity(i)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
@@ -100,7 +124,7 @@ class MenuActivity : AppCompatActivity() {
                 true
             }
             R.id.action_settings ->{
-                val i = Intent(this@MenuActivity, setting::class.java)
+                val i = Intent(this@MenuActivity, Setting::class.java)
                 startActivity(i)
                 true
             }

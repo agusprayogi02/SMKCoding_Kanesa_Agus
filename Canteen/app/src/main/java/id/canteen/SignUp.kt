@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -13,24 +15,51 @@ import com.google.firebase.database.FirebaseDatabase
 import id.canteen.data.Users
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import com.google.firebase.auth.FirebaseAuth
+import id.canteen.data.Warung
 import id.canteen.ui.login.LoginActivity
 
 
-class SignUp : AppCompatActivity() {
+class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     lateinit var ref: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
-
+    lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        progressDialog = ProgressDialog(
+            this,
+            R.style.Theme_MaterialComponents_Light_Dialog
+        )
+        val anim = AnimationUtils.loadAnimation(this, R.anim.shake)
         setSpinner()
         setlevel()
         mAuth = FirebaseAuth.getInstance()
         ref = FirebaseDatabase.getInstance().getReference("Users")
+
+        hallevel.onItemSelectedListener = this
         btnsignup.setOnClickListener {
+            btnsignup.startAnimation(anim)
             sigup()
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        if (hallevel.selectedItem.toString().equals("Pilih Jenis User",true)) {
+            adpwar.isVisible = false
+        } else if(hallevel.selectedItem.toString().equals("Penjual",true)){
+            adpwar.isVisible = true
+        }else if (hallevel.selectedItem.toString().equals("Pembeli", true)) {
+            adpwar.isVisible = false
+        }
+
+        Inwarung.isVisible = adpwar.isVisible
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
 
     private fun setlevel() {
@@ -48,15 +77,23 @@ class SignUp : AppCompatActivity() {
             inname.error = error
         } else if (inuser.text!!.isEmpty()) {
             inuser.error = error
-        }else if(inpass.length() <= 6){
+        }else if(inpass.length() < 6){
             inpass.error = "Password Minimal 6 Karakter!!"
         } else if (inpass.text!!.isEmpty()) {
             inpass.error = error
         } else if (hallevel.selectedItem.toString().equals("Pilih Jenis User",true)) {
             Toast.makeText(this,"Jenis User "+error,Toast.LENGTH_LONG).show()
-        } else if (jk.selectedItem.toString() == "Pilih Jenis Kelamin") {
+        }else if (jk.selectedItem.toString() == "Pilih Jenis Kelamin") {
             Toast.makeText(this,"Jenis Kelamin "+error,Toast.LENGTH_LONG).show()
         }else {
+            if(hallevel.selectedItem.toString().equals("Penjual", true)){
+                if (Inwarung.text.toString().isEmpty()){
+                    Inwarung.error = error
+                }
+            }
+            progressDialog.isIndeterminate = true
+            progressDialog.setMessage("Pembuatan...")
+            progressDialog.show()
             mAuth.createUserWithEmailAndPassword(user, pass)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -83,32 +120,55 @@ class SignUp : AppCompatActivity() {
             level = "User"
         }
         val uang = 0
-        val war = "Nama warung"
         val nama = inname.text.toString()
         val user = inuser.text.toString()
         val pass = inpass.text.toString()
         val jenkel = jk.selectedItem.toString()
+        var image : String = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fuser.png?alt=media&token=60779aae-d002-4881-9e30-c442fc3cbaa8"
+        if(level.equals("Member",true)){
+            if (jenkel.equals("Laki-Laki",true)){
+                image = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fmember-lk.png?alt=media&token=ab40e254-89dd-450f-acb7-7c84a01f85ac"
+            }else{
+                image = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fmember-p.png?alt=media&token=4781af40-9ea1-4811-8ede-a1fff0e6509e"
+            }
+        }else{
+            if (jenkel.equals("Laki-Laki",true)){
+                image = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fuser-lk.png?alt=media&token=75a3511b-548b-4b14-91f9-6285b84add7f"
+            }else{
+                image = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fuser-p.png?alt=media&token=52a98242-2f99-4d9f-952f-83777dda128a"
+            }
+        }
         val uid = FirebaseAuth.getInstance().uid
         val db = FirebaseDatabase.getInstance().getReference("Users/$uid")
-        db.setValue(Users(cur ,nama, user, pass, jenkel ,level , uang, war))
+        if (level.equals("Member",true)){
+            val nmwar = Inwarung.text.toString()
+            val linkback = "https://firebasestorage.googleapis.com/v0/b/canteen-school.appspot.com/o/images%2Ffoto%2Fwar.jpg?alt=media&token=730c38a1-497c-4c17-969d-d85956549671"
+            val back = "war.jpg"
+            val war = FirebaseDatabase.getInstance().getReference("Warung/$uid")
+            war.setValue(Warung(cur, nmwar, nama, back, linkback))
+                .addOnCompleteListener {
+                    if (!it.isSuccessful){
+                        Toast.makeText(this,it.exception.toString(),Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
+
+        }
+        db.setValue(Users(cur ,image,nama, user, pass, jenkel ,level , uang))
             .addOnCompleteListener {
-                val progressDialog = ProgressDialog(
-                    this,
-                    R.style.Theme_MaterialComponents_Light_Dialog
-                )
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("Authenticating...")
-                progressDialog.show()
+
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
                     val i = Intent(this, LoginActivity::class.java)
                     startActivity(i)
-                    progressDialog.show()
+                    finish()
+                    progressDialog.hide()
                 } else {
-                    progressDialog.show()
+                    progressDialog.hide()
                     Toast.makeText(this, "Gagal", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
-            }
+        }
     }
 
     private fun setSpinner() {

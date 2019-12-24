@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin"
                 android:hint="@string/username"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -77,6 +77,21 @@
             android:background="@drawable/button"
             android:textColor="@color/blue"
             />
+
+        <TextView
+            android:id="@+id/textrun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="@string/warning"
+            android:textSize="18sp"
+            android:textColor="#FF0000"
+            android:textStyle="bold|italic"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

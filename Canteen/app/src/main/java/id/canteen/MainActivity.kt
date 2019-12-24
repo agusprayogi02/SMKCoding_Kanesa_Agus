@@ -14,10 +14,12 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuInflater
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import id.canteen.data.Users
 import id.canteen.ui.login.LoginActivity
 import id.canteen.ui.histori.HistoriFragment
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             val headerview = nav_view.getHeaderView(0)
             val UserPeng : TextView = headerview.findViewById(R.id.UserPeng)
             val username : TextView = headerview.findViewById(R.id.penguna)
+            val image: ImageView = headerview.findViewById(R.id.ImgPeng)
             UserPeng.text = mAuth.currentUser!!.email
             setSupportActionBar(toolbar)
 
@@ -55,9 +58,9 @@ class MainActivity : AppCompatActivity() {
                             val user = h.getValue(Users::class.java)
                             if(user!!.current_user == mAuth.currentUser!!.uid){
                                 username.text = user.nama
+                                Picasso.get().load(user.image).into(image)
                                 if (user.level.equals("member",true)){
                                     val i = Intent(this@MainActivity, MenuActivity::class.java)
-                                    i.putExtra("warung", user.warung)
                                     startActivity(i)
                                 }
                             }

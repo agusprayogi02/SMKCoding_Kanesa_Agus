@@ -74,17 +74,32 @@
                         android:text="20.000" />
                 </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_Beli"
-                    android:layout_width="35dp"
-                    android:layout_height="25dp"
+                <LinearLayout
                     android:layout_gravity="right"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/beli"
-                    android:src="@drawable/ic_action_name"
-                    android:theme="@style/Widget.AppCompat.ImageButton"
-                    tools:ignore="ContentDescription"
-                    tools:src="@drawable/ic_action_name" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/btn_Beli"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/beli"
+                        android:src="@drawable/ic_action_name"
+                        android:theme="@style/Widget.AppCompat.ImageButton"
+                        tools:ignore="ContentDescription"
+                        tools:src="@drawable/ic_action_name" />
+                    <ImageButton
+                        android:id="@+id/btn_delete"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/beli"
+                        android:src="@drawable/ic_action_trash"
+                        android:theme="@style/Widget.AppCompat.ImageButton"
+                        tools:ignore="ContentDescription,InvalidId"
+                        tools:src="@drawable/ic_action_trash" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 <!--    </ScrollView>-->

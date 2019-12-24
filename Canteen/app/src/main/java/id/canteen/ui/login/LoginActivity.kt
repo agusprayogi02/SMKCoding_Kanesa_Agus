@@ -2,19 +2,24 @@ package id.canteen.ui.login
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdListener
+import androidx.core.view.isVisible
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.perf.metrics.Trace;
 import id.canteen.MainActivity
 import id.canteen.MenuActivity
 import id.canteen.R
@@ -27,37 +32,52 @@ class LoginActivity : AppCompatActivity() {
     lateinit var mAdView : AdView
     lateinit var mAuth: FirebaseAuth
     var ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+    lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        cekuser()
 
+        textrun.isSelected = true
+//        textrun.startAnimation(AnimationUtils.loadAnimation(this,R.anim.text_running))
+        val anim = AnimationUtils.loadAnimation(this ,R.anim.shake)
+        login.animation = anim
+        add.animation = anim
+
+        val myTrace = FirebasePerformance.getInstance().newTrace("test_trace")
+        myTrace.start()
+        progressDialog = ProgressDialog(
+            this,
+            R.style.Theme_MaterialComponents_Light_Dialog
+        )
+        progressDialog.isIndeterminate = true
+        progressDialog.setMessage("Authenticating...")
+        progressDialog.show()
+        cekuser()
         mAuth = FirebaseAuth.getInstance()
 //        Iklan
-
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 //        akhir Iklan
 
         ref.getReference("Users")
+
+        textrun.setOnClickListener {
+            Masuk()
+        }
         add.setOnClickListener {
+            it.startAnimation(anim)
             Masuk()
         }
         login.setOnClickListener {
+            it.startAnimation(anim)
             val email = username.text.toString()
             val password = password.text.toString()
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please Insert Email and Password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val progressDialog = ProgressDialog(
-                this,
-                R.style.Theme_MaterialComponents_Light_Dialog
-            )
-            progressDialog.isIndeterminate = true
-            progressDialog.setMessage("Authenticating...")
             progressDialog.show()
             mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
@@ -72,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "Succesfully Login", Toast.LENGTH_SHORT).show()
                         getdata()
                     progressDialog.hide()
-//                    finish()
+                    finish()
                 }
                 .addOnFailureListener {
                     Log.d("Main", "Failed Login: ${it.message}")
@@ -80,12 +100,22 @@ class LoginActivity : AppCompatActivity() {
 
                 }
         }
+
+        myTrace.stop()
         }
 
     private fun cekuser() {
         if(!FirebaseAuth.getInstance().uid.isNullOrEmpty()){
+            progressDialog = ProgressDialog(
+                this,
+                R.style.Theme_MaterialComponents_Light_Dialog
+            )
+            progressDialog.isIndeterminate = true
+            progressDialog.setMessage("Authenticating...")
+            progressDialog.show()
             getdata()
         }
+        progressDialog.hide()
     }
 
     private fun getdata() {
@@ -103,16 +133,19 @@ class LoginActivity : AppCompatActivity() {
                             if(data.equals("member",true)){
                                 val i = Intent(this@LoginActivity, MenuActivity::class.java)
                                 startActivity(i)
+                                progressDialog.hide()
+                                finish()
                             }else{
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
+                                progressDialog.hide()
+                                finish()
                             }
                         }
                     }
                 }
 
-            }
-        )
+            })
     }
 
     private fun Masuk() {
