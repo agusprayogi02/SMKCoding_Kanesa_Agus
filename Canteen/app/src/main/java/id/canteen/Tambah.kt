@@ -31,7 +31,7 @@ class Tambah : AppCompatActivity() {
     private var storageReference: StorageReference? = null
     lateinit var ref: DatabaseReference
     private var mAuth: FirebaseAuth? = FirebaseAuth.getInstance()
-    lateinit var link: String
+    lateinit var image: String
     lateinit var nama: String
     lateinit var harga: String
 
@@ -130,7 +130,7 @@ class Tambah : AppCompatActivity() {
                     val url = it.toString()
                     val imageLink = rand
                     Toast.makeText(this, imageLink, Toast.LENGTH_SHORT).show()
-                    link = imageLink
+                    image = imageLink
                     savadata(url)
                 }
             }
@@ -145,7 +145,7 @@ class Tambah : AppCompatActivity() {
         val b = iin.getExtras()!!.get("warung")
         val idWar = b.toString()
         val User = mAuth!!.currentUser!!.uid
-        val Menu = Menus(userId, User,idWar, url,link, nama, harga)
+        val Menu = Menus(userId, User, idWar, url, image, nama, harga)
         ref.child(userId).setValue(Menu).addOnCompleteListener {
             Toast.makeText(this, "Successs", Toast.LENGTH_SHORT).show()
             val i = Intent(this, MenuActivity::class.java)

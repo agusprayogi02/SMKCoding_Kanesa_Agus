@@ -17,6 +17,8 @@ import android.view.MenuInflater
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
@@ -58,7 +60,10 @@ class MainActivity : AppCompatActivity() {
                             val user = h.getValue(Users::class.java)
                             if(user!!.current_user == mAuth.currentUser!!.uid){
                                 username.text = user.nama
-                                Picasso.get().load(user.image).into(image)
+//                                Picasso.get().load(user.image).into(image)
+                                Glide.with(this@MainActivity).load(user.image)
+                                    .apply(RequestOptions())
+                                    .into(image)
                                 if (user.level.equals("member",true)){
                                     val i = Intent(this@MainActivity, MenuActivity::class.java)
                                     startActivity(i)
@@ -110,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"
-                    val uri: String = "ayo install Canteen School Now"
+                    val uri = "ayo install Canteen School Now"
                     intent.putExtra(Intent.EXTRA_SUBJECT,"Share Here")
                     intent.putExtra(Intent.EXTRA_TEXT,uri)
                     startActivity(Intent.createChooser(intent,"Sharing Option"))

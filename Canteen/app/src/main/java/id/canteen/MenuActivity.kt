@@ -10,9 +10,11 @@ import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import id.canteen.data.AdapterMenu
 import id.canteen.data.Menus
 import id.canteen.data.Users
 import id.canteen.data.Warung
+import id.canteen.session.userNow
 import id.canteen.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.masukkan.*
 
@@ -22,7 +24,6 @@ class MenuActivity : AppCompatActivity() {
     lateinit var list : MutableList<Menus>
     lateinit var listView: ListView
     var mn_menu : String = ""
-    var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
 
     @SuppressLint("SetTextI18n")
@@ -39,10 +40,10 @@ class MenuActivity : AppCompatActivity() {
                     for (i in p0.children) {
 
                         val user = i.getValue(Users::class.java)
-                        if (user!!.current_user == mAuth.currentUser!!.uid) {
+                        if (user!!.current_user == userNow.currrenuser()) {
                             ref = FirebaseDatabase.getInstance().getReference("Menus")
                             list = mutableListOf()
-                            listView = findViewById(R.id.list_view)
+                            listView = this@MenuActivity.findViewById(R.id.list_view)
                             firebaseDatabase.getReference("Warung").addValueEventListener(
                                 object : ValueEventListener{
                                     override fun onCancelled(p0: DatabaseError) {
@@ -54,8 +55,9 @@ class MenuActivity : AppCompatActivity() {
                                             list.clear()
                                             for (h in p0.children){
                                                 val warung = h.getValue(Warung::class.java)
-                                                if (warung!!.idUser == mAuth.currentUser!!.uid){
+                                                if (warung!!.idUser == userNow.currrenuser()) {
                                                     mn_menu = warung.Nama
+                                                    text.setText("Menu Warung " + mn_menu)
                                                 }
                                             }
                                         }
@@ -74,17 +76,20 @@ class MenuActivity : AppCompatActivity() {
                                         list.clear()
                                         for (h in p0.children){
                                             val menu = h.getValue(Menus::class.java)
-                                            list.add(menu!!)
+                                            if (userNow.currrenuser() == menu!!.idUser) {
+                                                list.add(menu)
+                                            }
                                         }
-                                        val adapter = id.canteen.data.AdapterMenu(this@MenuActivity,R.layout.activity_menu,list)
+                                        val adapter = AdapterMenu(
+                                            this@MenuActivity,
+                                            R.layout.activity_menu,
+                                            list
+                                        )
                                         listView.adapter = adapter
                                     }
                                 }
                             })
-                            if (mn_menu.isEmpty()){
-                                mn_menu = user.nama
-                            }
-                            text.setText("Menu Warung "+mn_menu)
+
                         }
                     }
                 }

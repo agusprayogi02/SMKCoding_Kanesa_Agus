@@ -11,10 +11,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.squareup.picasso.Picasso
 import id.canteen.DafWarung
 import id.canteen.R
-import id.canteen.session.Session
+import id.canteen.session.SessionNmWarung
 import android.widget.ArrayAdapter as ArrayAdapter1
 
 
@@ -34,12 +36,15 @@ class AdapterWarung(val mCtx: Context, val layoutResId: Int, val list: List<Waru
 
         val warung = list[position]
 
-        Picasso.get().load(warung.link).into(img)
+//        Picasso.get().load(warung.link).into(img)
+        Glide.with(context).load(warung.link)
+            .apply(RequestOptions())
+            .into(img)
         nama.text = "Warung ${warung.Nama}"
 
         item.setOnClickListener {
-            Session.Session(mCtx)
-            Session["Nama"] = warung.idUser
+            SessionNmWarung.Session(mCtx)
+            SessionNmWarung["Nama"] = warung.idUser
             val intent = Intent(context, DafWarung::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)

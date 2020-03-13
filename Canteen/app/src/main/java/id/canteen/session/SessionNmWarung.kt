@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
 
-object Session {
+object SessionNmWarung {
     private var prefs: SharedPreferences? = null
 
     fun Session(cntx: Context?) { // TODO Auto-generated constructor stub

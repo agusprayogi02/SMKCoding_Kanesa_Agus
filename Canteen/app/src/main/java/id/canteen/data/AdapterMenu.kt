@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import id.canteen.R
@@ -32,7 +34,10 @@ class  AdapterMenu(val mCtx: Context, val layoutResId: Int, val list: List<Menus
 
         val menu = list[position]
 
-        Picasso.get().load(menu.Url).into(image)
+//        Picasso.get().load(menu.Url).into(image)
+        Glide.with(context).load(menu.Url)
+            .apply(RequestOptions())
+            .into(image)
         nama.text = menu.nama
         harga.text = menu.harga
 

@@ -85,13 +85,13 @@ class LoginActivity : AppCompatActivity() {
                     if (!it.isSuccessful) {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
-                        progressDialog.hide()
+                        progressDialog.dismiss()
                         return@addOnCompleteListener
 
                     } else
                         Toast.makeText(this, "Succesfully Login", Toast.LENGTH_SHORT).show()
                         getdata()
-                    progressDialog.hide()
+                    progressDialog.dismiss()
                     finish()
                 }
                 .addOnFailureListener {
@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
             progressDialog.show()
             getdata()
         }
-        progressDialog.hide()
+        progressDialog.dismiss()
     }
 
     private fun getdata() {
@@ -133,18 +133,17 @@ class LoginActivity : AppCompatActivity() {
                             if(data.equals("member",true)){
                                 val i = Intent(this@LoginActivity, MenuActivity::class.java)
                                 startActivity(i)
-                                progressDialog.hide()
+                                progressDialog.dismiss()
                                 finish()
                             }else{
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
-                                progressDialog.hide()
+                                progressDialog.dismiss()
                                 finish()
                             }
                         }
                     }
                 }
-
             })
     }
 
