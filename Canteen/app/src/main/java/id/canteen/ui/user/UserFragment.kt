@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.canteen.ui.user
 
 import android.app.Activity

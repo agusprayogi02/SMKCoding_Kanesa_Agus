@@ -3,8 +3,6 @@ package id.canteen
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.DataSnapshot
@@ -16,7 +14,6 @@ import id.canteen.session.SessionNmWarung
 import kotlinx.android.synthetic.main.activity_daf_warung.*
 import id.canteen.data.AdapterMenuW
 import id.canteen.data.Warung
-import id.canteen.session.userNow
 
 class DafWarung : AppCompatActivity() {
 

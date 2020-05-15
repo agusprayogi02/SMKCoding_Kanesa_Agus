@@ -1,6 +1,5 @@
 package id.canteen
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,16 +19,19 @@ import kotlinx.android.synthetic.main.masukkan.*
 
 class MenuActivity : AppCompatActivity() {
 
-    lateinit var ref : DatabaseReference
     lateinit var list : MutableList<Menus>
     lateinit var listView: ListView
     var mn_menu : String = ""
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.masukkan)
+
+//        text.setOnClickListener {
+//            startActivity(Intent(this@MenuActivity,Setting::class.java))
+//        }
+
         firebaseDatabase.getReference("Users").addValueEventListener(
             object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -41,9 +43,8 @@ class MenuActivity : AppCompatActivity() {
 
                         val user = i.getValue(Users::class.java)
                         if (user!!.current_user == userNow.currrenuser()) {
-                            ref = FirebaseDatabase.getInstance().getReference("Menus")
                             list = mutableListOf()
-                            listView = this@MenuActivity.findViewById(R.id.list_view)
+                            listView = findViewById(R.id.list_view)
                             firebaseDatabase.getReference("Warung").addValueEventListener(
                                 object : ValueEventListener{
                                     override fun onCancelled(p0: DatabaseError) {
@@ -57,7 +58,7 @@ class MenuActivity : AppCompatActivity() {
                                                 val warung = h.getValue(Warung::class.java)
                                                 if (warung!!.idUser == userNow.currrenuser()) {
                                                     mn_menu = warung.Nama
-                                                    text.setText("Menu Warung " + mn_menu)
+                                                    text.text = "Menu Warung $mn_menu"
                                                 }
                                             }
                                         }
@@ -66,7 +67,7 @@ class MenuActivity : AppCompatActivity() {
                                 }
                             )
 
-                            ref.addValueEventListener(object : ValueEventListener {
+                            firebaseDatabase.getReference("Menus").addValueEventListener(object : ValueEventListener {
                                 override fun onCancelled(p0: DatabaseError) {
 
                                 }
@@ -94,10 +95,6 @@ class MenuActivity : AppCompatActivity() {
                     }
                 }
             })
-        text.setOnClickListener {
-            val i = Intent(this,Setting::class.java)
-            startActivity(i)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {

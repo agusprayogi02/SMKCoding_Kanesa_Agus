@@ -31,7 +31,8 @@
             app:cardCornerRadius="1dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="@dimen/activity_vertical_margin"
             android:background="@color/white">
 
             <ImageView

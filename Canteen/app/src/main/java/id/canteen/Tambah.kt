@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +22,7 @@ import java.io.IOException
 import kotlin.random.Random
 
 
+@Suppress("DEPRECATION")
 class Tambah : AppCompatActivity() {
 
     private val PICK_IMAGE_REQUEST = 100
@@ -40,12 +40,10 @@ class Tambah : AppCompatActivity() {
         setContentView(R.layout.activity_tambah)
         prosessBar.hide()
 
-        val anim = AnimationUtils.loadAnimation(this ,R.anim.shake)
+        val anim = AnimationUtils.loadAnimation(this, R.anim.shake)
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-        val iin = intent
-        val b = iin.getExtras()!!.get("warung").toString()
         ref = FirebaseDatabase.getInstance().getReference("Menus")
         add_menu_image.setOnClickListener {
             it.startAnimation(anim)
@@ -105,8 +103,10 @@ class Tambah : AppCompatActivity() {
             addImage.isDrawingCacheEnabled = true
             addImage.buildDrawingCache()
             val bitmap = (addImage.drawable as BitmapDrawable).bitmap
-            val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 0.3).toInt(),
-                (bitmap.height * 0.3).toInt(), true)
+            val resized = Bitmap.createScaledBitmap(
+                bitmap, (bitmap.width * 0.3).toInt(),
+                (bitmap.height * 0.3).toInt(), true
+            )
             val baos = ByteArrayOutputStream()
             resized.compress(Bitmap.CompressFormat.JPEG, 80, baos)
             val data = baos.toByteArray()
@@ -118,7 +118,7 @@ class Tambah : AppCompatActivity() {
                 prosessBar.isIndeterminate = true
                 prosessBar.setBackgroundResource(R.color.white)
                 prosessBar.show()
-                prosessBar.setProgress(progress.toInt())
+                prosessBar.progress = progress.toInt()
             }.addOnPausedListener {
                 System.out.println("Upload is paused")
             }.addOnFailureListener {
@@ -134,15 +134,15 @@ class Tambah : AppCompatActivity() {
                     savadata(url)
                 }
             }
-        }else{
+        } else {
             Toast.makeText(this, "Masukkan Gambar", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun savadata(url : String) {
+    private fun savadata(url: String) {
         val userId = ref.push().key.toString()
         val iin = intent
-        val b = iin.getExtras()!!.get("warung")
+        val b = iin.extras!!.get("warung")
         val idWar = b.toString()
         val User = mAuth!!.currentUser!!.uid
         val Menu = Menus(userId, User, idWar, url, image, nama, harga)

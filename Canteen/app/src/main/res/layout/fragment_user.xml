@@ -59,8 +59,9 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:text="Uang"
+                android:layout_margin="8dp"
+                android:text="Saldo"
+                android:textStyle="bold"
                 android:gravity="center"
                 style="@style/Animation.Design.BottomSheetDialog"/>
         </androidx.cardview.widget.CardView>
@@ -70,6 +71,12 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             app:cardCornerRadius="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text=""
+                android:gravity="center"/>
 
         </androidx.cardview.widget.CardView>
     </RelativeLayout>

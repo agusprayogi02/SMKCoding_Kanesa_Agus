@@ -61,7 +61,12 @@ class MainActivity : AppCompatActivity() {
                             if(user!!.current_user == mAuth.currentUser!!.uid){
                                 username.text = user.nama
 //                                Picasso.get().load(user.image).into(image)
-                                Glide.with(this@MainActivity).load(user.image)
+                                val image_uri = if (mAuth.currentUser!!.photoUrl.toString().isEmpty()){
+                                    user.image
+                                }else{
+                                    mAuth.currentUser!!.photoUrl
+                                }
+                                Glide.with(this@MainActivity).load(image_uri)
                                     .apply(RequestOptions())
                                     .into(image)
                                 if (user.level.equals("member",true)){

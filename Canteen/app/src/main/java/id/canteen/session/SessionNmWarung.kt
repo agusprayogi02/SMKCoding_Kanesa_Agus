@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.canteen.session
 
 import android.content.Context

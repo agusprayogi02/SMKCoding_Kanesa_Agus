@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.canteen.data
 
 import android.app.AlertDialog
@@ -12,8 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import id.canteen.R
-import com.squareup.picasso.Picasso
-
 
 class  AdapterMenu(val mCtx: Context, val layoutResId: Int, val list: List<Menus> )
     : ArrayAdapter<Menus>(mCtx,layoutResId,list) {
@@ -53,7 +53,7 @@ class  AdapterMenu(val mCtx: Context, val layoutResId: Int, val list: List<Menus
                     R.style.Theme_MaterialComponents_Light_Dialog
                 )
                 progressDialog.isIndeterminate = true
-                progressDialog.setMessage("Pembuatan...")
+                progressDialog.setMessage("Penghapusan ...")
                 progressDialog.show()
                 val storageRef = FirebaseStorage.getInstance().reference
                 val desertRef = storageRef.child("images/Menu/${menu.image}")

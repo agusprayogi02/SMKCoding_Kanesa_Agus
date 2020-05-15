@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.canteen
 
 import android.app.Activity
@@ -9,11 +11,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.renderscript.Sampler
-import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.content.contentValuesOf
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_setting.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlin.random.Random
-import kotlin.system.exitProcess
 
 class Setting : AppCompatActivity() {
 
@@ -47,6 +46,10 @@ class Setting : AppCompatActivity() {
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         ref = FirebaseDatabase.getInstance().getReference("Warung")
+        btnbatal.setOnClickListener {
+            startActivity(Intent(this,MenuActivity::class.java))
+            finish()
+        }
 
         ref.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
@@ -59,6 +62,10 @@ class Setting : AppCompatActivity() {
                         val warung = h.getValue(Warung::class.java)
                         if (warung!!.idUser == mAuth!!.currentUser!!.uid){
                             Picasso.get().load(warung.link).into(addback)
+//                            Glide.with(this@Setting)
+//                                .load(warung.link)
+//                                .apply(RequestOptions())
+//                                .into(addback)
                             def = warung.Background
                             addback.tag = def
                             addmnuser.setText(warung.Penjual)
@@ -102,10 +109,10 @@ class Setting : AppCompatActivity() {
             addback.isDrawingCacheEnabled = true
             addback.buildDrawingCache()
             val bitmap = (addback.drawable as BitmapDrawable).bitmap
-            val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 0.3).toInt(),
-                (bitmap.height * 0.3).toInt(), true)
+            val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 0.7).toInt(),
+                (bitmap.height * 0.7).toInt(), true)
             val baos = ByteArrayOutputStream()
-            resized.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+            resized.compress(Bitmap.CompressFormat.JPEG, 90, baos)
             val data = baos.toByteArray()
 
             val uploadTask = mountainImagesRef.putBytes(data)

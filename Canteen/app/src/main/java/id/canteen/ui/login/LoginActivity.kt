@@ -1,16 +1,14 @@
+@file:Suppress("DEPRECATION")
+
 package id.canteen.ui.login
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.perf.FirebasePerformance
-import com.google.firebase.perf.metrics.Trace;
 import id.canteen.MainActivity
 import id.canteen.MenuActivity
 import id.canteen.R
@@ -27,9 +24,10 @@ import id.canteen.SignUp
 import id.canteen.data.Users
 import kotlinx.android.synthetic.main.activity_login.*
 
+@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var mAdView : AdView
+    lateinit var mAdView: AdView
     lateinit var mAuth: FirebaseAuth
     var ref: FirebaseDatabase = FirebaseDatabase.getInstance()
     lateinit var progressDialog: ProgressDialog
@@ -40,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
         textrun.isSelected = true
 //        textrun.startAnimation(AnimationUtils.loadAnimation(this,R.anim.text_running))
-        val anim = AnimationUtils.loadAnimation(this ,R.anim.shake)
+        val anim = AnimationUtils.loadAnimation(this, R.anim.shake)
         login.animation = anim
         add.animation = anim
 
@@ -87,10 +85,9 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         progressDialog.dismiss()
                         return@addOnCompleteListener
-
-                    } else
-                        Toast.makeText(this, "Succesfully Login", Toast.LENGTH_SHORT).show()
-                        getdata()
+                    }
+                    Toast.makeText(this, "Succesfully Login", Toast.LENGTH_SHORT).show()
+                    getdata()
                     progressDialog.dismiss()
                     finish()
                 }
@@ -102,10 +99,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         myTrace.stop()
-        }
+    }
 
     private fun cekuser() {
-        if(!FirebaseAuth.getInstance().uid.isNullOrEmpty()){
+        if (!FirebaseAuth.getInstance().uid.isNullOrEmpty()) {
             progressDialog = ProgressDialog(
                 this,
                 R.style.Theme_MaterialComponents_Light_Dialog
@@ -126,16 +123,16 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    for (i in p0.children){
+                    for (i in p0.children) {
                         val user = i.getValue(Users::class.java)
-                        if(user!!.current_user == mAuth.currentUser!!.uid){
+                        if (user!!.current_user == mAuth.currentUser!!.uid) {
                             val data = user.level
-                            if(data.equals("member",true)){
-                                val i = Intent(this@LoginActivity, MenuActivity::class.java)
-                                startActivity(i)
+                            if (data.equals("member", true)) {
+                                val intent = Intent(this@LoginActivity, MenuActivity::class.java)
+                                startActivity(intent)
                                 progressDialog.dismiss()
                                 finish()
-                            }else{
+                            } else {
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 progressDialog.dismiss()
